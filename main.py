@@ -12,7 +12,7 @@ from presentation.observer import Observable
 
 DATA_SLICE_DAYS = 1
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M"
-API_URL = 'https://production.api.coindesk.com/v2/price/values/BTC?ohlc=true'
+API_URL = 'https://production.api.coindesk.com/v2/price/values/DOGE?ohlc=true'
 
 
 def get_dummy_data():
