@@ -1,6 +1,7 @@
 import json
 import random
 import time
+import numpy as np
 from datetime import datetime, timezone, timedelta
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -12,7 +13,7 @@ from presentation.observer import Observable
 
 DATA_SLICE_DAYS = 1
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M"
-API_URL = 'https://production.api.coindesk.com/v2/price/values/DOGE?ohlc=true'
+API_URL = 'https://api.binance.com/api/v3/klines?symbol=DOGEEUR&interval=1m'
 
 
 def get_dummy_data():
@@ -22,16 +23,21 @@ def get_dummy_data():
 
 def fetch_prices():
     logger.info('Fetching prices')
-    timeslot_end = datetime.now(timezone.utc)
-    end_date = timeslot_end.strftime(DATETIME_FORMAT)
-    start_data = (timeslot_end - timedelta(days=DATA_SLICE_DAYS)).strftime(DATETIME_FORMAT)
-    url = f'{API_URL}&start_date={start_data}&end_date={end_date}'
-    req = Request(url)
+    #timeslot_end = datetime.now(timezone.utc)
+    #end_date = timeslot_end.strftime(DATETIME_FORMAT)
+    #start_data = (timeslot_end - timedelta(days=DATA_SLICE_DAYS)).strftime(DATETIME_FORMAT)
+    #url = f'{API_URL}&startTime={start_data}&endTime={end_date}'
+    req = Request(API_URL)
     data = urlopen(req).read()
     external_data = json.loads(data)
-    prices = [entry[1:] for entry in external_data['data']['entries']]
+    trimmed_data = clean_data(external_data)
+    prices = [entry[1:] for entry in trimmed_data]
     return prices
 
+def clean_data(var):
+    interm_data = [entry[:5] for entry in var]
+    final_var = [[float(num) if num != float else num for num in numlist] for numlist in interm_data]
+    return final_var
 
 def main():
     logger.info('Initialize')

@@ -30,19 +30,19 @@ class Plot:
         min_price = min(prices)
         middle_price = (max_price - min_price) / 2 + min_price
 
-        price = "%d" % max_price
+        price = "%.4f" % max_price
         draw.text((center_x(price), position_first[1]), price, font=font)
-        price = "%d" % middle_price
+        price = "%.4f" % middle_price
         draw.text((center_x(price), (position_last[1] - position_first[1]) / 2 + position_first[1]), price, font=font)
-        price = "%d" % min_price
+        price = "%.4f" % min_price
         draw.text((center_x(price), position_last[1]), price, font=font)
 
     @staticmethod
     def caption(price, y, screen_width, font, draw):
-        draw.text((-1, y), "BTC", font=font)
-        price_text = "%.2f" % price
+        draw.text((-1, y), "DOGE", font=font)
+        price_text = "%.4f" % price
         text_width, _ = draw.textsize(price_text, font)
-        price_position = (((screen_width - text_width - 60) / 2) + 60, y)
+        price_position = (((screen_width - text_width - 60) / 2) + 124, y)
         draw.text(price_position, price_text, font=font)
 
     @staticmethod
